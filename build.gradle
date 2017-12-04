@@ -4,7 +4,7 @@ buildscript {
     ext {
         buildToolsVersion = "27.0.2"
         supportLibVersion = "26.+"
-        archRoomVersion = "1.0.0-alpha1"
+        archRoomVersion = "1.0.0"
     }
     repositories {
         jcenter()

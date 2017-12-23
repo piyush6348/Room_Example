@@ -11,6 +11,15 @@ import android.arch.persistence.room.PrimaryKey;
 
 // Table in the database
 
+    //Now, lets create an entity called User.
+    // It defines a attributes of your table,
+    // it is must to declare one field as primary key.
+    // It has property to auto generate values.
+    // Class is annotated with @Entity and name of the table.
+    // To make field primary key,
+    // you need to annotate a field with @PrimaryKey and property autoGenerate which assign automatic IDs.
+    // Room will create a user table with defined attributes.
+
     @Entity(tableName = "Users")
 public class User {
 

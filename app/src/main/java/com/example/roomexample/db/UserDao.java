@@ -11,9 +11,12 @@ import java.util.List;
  * Created by piyush on 25/12/17.
  */
 
-
 // Database Object for CRUD operations
-
+    // Create a data access object using an interface.
+    // This class is annotated with @Dao annotation.
+    // Room will generate an implementation of defined methods.
+    // There are four annotations @Query, @Insert, @Update, @Delete to perform CRUD operations.
+    // @Query annotation is used to perform read operation on database.
     @Dao
 public interface UserDao {
 

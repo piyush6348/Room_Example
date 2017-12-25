@@ -16,8 +16,9 @@ import java.util.List;
 public class DatabaseInitializer {
     private static final String TAG = DatabaseInitializer.class.getName();
 
-    public static void populateAsync(@NonNull final AppDatabase db) {
-        PopulateDbAsync task = new PopulateDbAsync(db);
+    public static void populateAsync(@NonNull final AppDatabase db, RoomQueryListener rql) {
+
+        PopulateDbAsync task = new PopulateDbAsync(db,rql);
         task.execute();
     }
 
@@ -30,7 +31,7 @@ public class DatabaseInitializer {
         return user;
     }
 
-    private static void populateWithTestData(AppDatabase db) {
+    private static List<User> populateWithTestData(AppDatabase db) {
         User user = new User();
         user.setFirstName("Ajay");
         user.setLastName("Saini");
@@ -39,21 +40,31 @@ public class DatabaseInitializer {
 
         List<User> userList = db.userDao().getAll();
         Log.d(DatabaseInitializer.TAG, "Rows Count: " + userList.size());
+
+        return userList;
     }
 
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, List<User>> {
 
         private final AppDatabase mDb;
-
-        PopulateDbAsync(AppDatabase db) {
+        private RoomQueryListener roomQueryListener;
+        PopulateDbAsync(AppDatabase db, RoomQueryListener rql) {
             mDb = db;
+            roomQueryListener = rql;
         }
+        @Override
+        protected List<User> doInBackground(final Void... params) {
+            return populateWithTestData(mDb);
+        }
+
 
         @Override
-        protected Void doInBackground(final Void... params) {
-            populateWithTestData(mDb);
-            return null;
+        protected void onPostExecute(List<User> userList) {
+            super.onPostExecute(userList);
+            roomQueryListener.onSuccess(userList);
         }
+
+
 
     }
 }

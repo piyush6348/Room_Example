@@ -28,15 +28,16 @@ public class MainActivity extends LifecycleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Every time onCreate runs a new user is added to db by this
         DatabaseInitializer.populateAsync(AppDatabase.getDatabase(this));
 
-        rvUsers = (RecyclerView) findViewById(R.id.rv_users);
-        rvUsers.setLayoutManager(new LinearLayoutManager(this));
+        setUpRV();
 
-         userAdapter = new UserAdapter(MainActivity.this,new ArrayList<User>());
+        setUpViewModel();
 
-        rvUsers.setAdapter(userAdapter);
+    }
 
+    private void setUpViewModel() {
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         userViewModel.getUserList().observe(this, new Observer<List<User>>() {
@@ -46,6 +47,13 @@ public class MainActivity extends LifecycleActivity {
                 userAdapter.setUserList(userList);
             }
         });
+    }
+
+    private void setUpRV() {
+        rvUsers = (RecyclerView) findViewById(R.id.rv_users);
+        rvUsers.setLayoutManager(new LinearLayoutManager(this));
+        userAdapter = new UserAdapter(MainActivity.this,new ArrayList<User>());
+        rvUsers.setAdapter(userAdapter);
     }
 
     @Override

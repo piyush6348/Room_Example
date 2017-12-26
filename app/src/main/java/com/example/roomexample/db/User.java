@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.databinding.BindingAdapter;
+import android.widget.TextView;
 
 /**
  * Created by piyush on 25/12/17.
@@ -71,4 +73,10 @@ public class User {
     public void setAge(int age) {
         this.age = age;
     }
+
+    @BindingAdapter("android:text")
+    public static void setText(TextView view, int value) {
+        view.setText(Integer.toString(value));
+    }
+
 }

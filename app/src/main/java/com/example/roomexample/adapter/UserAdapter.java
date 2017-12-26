@@ -1,12 +1,15 @@
 package com.example.roomexample.adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.roomexample.BR;
 import com.example.roomexample.R;
 import com.example.roomexample.db.User;
 
@@ -35,9 +38,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
-        holder.tvFname.setText(userList.get(position).getFirstName());
-        holder.tvLname.setText(userList.get(position).getLastName());
-        holder.tvAge.setText(""+userList.get(position).getAge());
+        holder.getViewDataBinding().setVariable(BR.singleUser,userList.get(position));
+        holder.getViewDataBinding().executePendingBindings();
     }
 
     public void setUserList(List<User> userList){
@@ -51,12 +53,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     class UserViewHolder extends RecyclerView.ViewHolder{
-        public TextView tvFname,tvLname,tvAge;
+        private ViewDataBinding viewDataBinding;
         public UserViewHolder(View itemView) {
             super(itemView);
-            tvFname = (TextView) itemView.findViewById(R.id.tv_fname);
-            tvLname = (TextView) itemView.findViewById(R.id.tv_lname);
-            tvAge = (TextView) itemView.findViewById(R.id.tv_age);
+            viewDataBinding = DataBindingUtil.bind(itemView);
+        }
+        public ViewDataBinding getViewDataBinding(){
+            return viewDataBinding;
         }
     }
 }

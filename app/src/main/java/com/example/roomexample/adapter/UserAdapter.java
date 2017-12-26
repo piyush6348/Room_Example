@@ -40,6 +40,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.tvAge.setText(""+userList.get(position).getAge());
     }
 
+    public void setUserList(List<User> userList){
+        this.userList = userList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return userList.size();

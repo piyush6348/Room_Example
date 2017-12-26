@@ -1,5 +1,6 @@
 package com.example.roomexample.db;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -21,7 +22,7 @@ import java.util.List;
 public interface UserDao {
 
     @Query("Select * from Users")
-    List<User> getAll();
+    LiveData<List<User>> getAll();
 
     @Query("Select * from Users where first_name LIKE :firstName and last_name LIKE :lastName")
     User findByName(String firstName, String lastName);

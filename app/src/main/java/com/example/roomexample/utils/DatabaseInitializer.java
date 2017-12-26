@@ -1,5 +1,6 @@
 package com.example.roomexample.utils;
 
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -16,9 +17,9 @@ import java.util.List;
 public class DatabaseInitializer {
     private static final String TAG = DatabaseInitializer.class.getName();
 
-    public static void populateAsync(@NonNull final AppDatabase db, RoomQueryListener rql) {
+    public static void populateAsync(@NonNull final AppDatabase db) {
 
-        PopulateDbAsync task = new PopulateDbAsync(db,rql);
+        PopulateDbAsync task = new PopulateDbAsync(db);
         task.execute();
     }
 
@@ -31,40 +32,30 @@ public class DatabaseInitializer {
         return user;
     }
 
-    private static List<User> populateWithTestData(AppDatabase db) {
+    private static void populateWithTestData(AppDatabase db) {
         User user = new User();
         user.setFirstName("Ajay");
         user.setLastName("Saini");
         user.setAge(25);
         addUser(db, user);
 
-        List<User> userList = db.userDao().getAll();
-        Log.d(DatabaseInitializer.TAG, "Rows Count: " + userList.size());
+        //List<User> userList = db.userDao().getAll();
+       // Log.d(DatabaseInitializer.TAG, "Rows Count: " + userList.size());
 
-        return userList;
+        return ;
     }
 
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, List<User>> {
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
         private final AppDatabase mDb;
-        private RoomQueryListener roomQueryListener;
-        PopulateDbAsync(AppDatabase db, RoomQueryListener rql) {
+        PopulateDbAsync(AppDatabase db) {
             mDb = db;
-            roomQueryListener = rql;
         }
         @Override
-        protected List<User> doInBackground(final Void... params) {
-            return populateWithTestData(mDb);
+        protected Void doInBackground(final Void... params) {
+             populateWithTestData(mDb);
+            return null;
         }
-
-
-        @Override
-        protected void onPostExecute(List<User> userList) {
-            super.onPostExecute(userList);
-            roomQueryListener.onSuccess(userList);
-        }
-
-
 
     }
 }
